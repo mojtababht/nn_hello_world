@@ -5,6 +5,8 @@ import torch.optim as optim
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
+import random
 
 class CNN(nn.Module):
 
@@ -86,3 +88,19 @@ def test():
 for e in range(1, 11):
     train(e)
     test()
+while True:
+    model.eval()
+
+    data, target = test_data[random.randint(0, 100)]
+
+    data = data.unsqueeze(0).to(device)
+    output = model(data)
+    prediction = output.argmax(dim=1, keepdim=True).item()
+    print(f'prediction: {prediction}, \t target: {target}')
+
+    image = data.squeeze(0).squeeze(0).cpu().numpy()
+
+    plt.imshow(image, cmap='gray')
+    plt.show()
+    if input('exit(y or n):') == 'y':
+        break
