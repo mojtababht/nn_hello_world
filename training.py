@@ -30,7 +30,9 @@ loaders = {
 device = torch.device('coda' if torch.cuda.is_available() else 'cpu')
 
 model = CNN().to(device)
-
+try:
+    model.load_state_dict(torch.load('data.pt'))
+except: ...
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 loss_fn = nn.CrossEntropyLoss()
@@ -66,7 +68,7 @@ def test():
 
 
 def train_save():
-    for e in range(1, 21):
+    for e in range(1, 1001):
         train(e)
         test()
-    torch.save(model.state_dict(), 'data.pt')
+        torch.save(model.state_dict(), 'data.pt')

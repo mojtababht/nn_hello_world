@@ -80,6 +80,8 @@ try:
     model.load_state_dict(torch.load('data.pt'))
     raise Exception('mmd')
 except:
+    model.eval()
+    model.to(device)
     train_save()
 
 model.eval()
@@ -87,7 +89,7 @@ model.eval()
 # screen = Screen(model)
 # screen.mainloop()
 
-
+xx = 0
 while True:
     model.eval()
 
@@ -98,11 +100,14 @@ while True:
     data = data.unsqueeze(0).to(device)
     output = model(data)
     prediction = output.argmax(dim=1, keepdim=True).item()
-    print(f'prediction: {prediction}, \t target: {target}')
+    if prediction != target:
+        print(f'prediction: {prediction}, \t target: {target}')
+        xx+=1
+        print(xx)
 
-    image = data.squeeze(0).squeeze(0).cpu().numpy()
-
-    plt.imshow(image, cmap='gray')
-    plt.show()
+    # image = data.squeeze(0).squeeze(0).cpu().numpy()
+    #
+    # plt.imshow(image, cmap='gray')
+    # plt.show()
     # if input('exit(y or n):') == 'y':
     #     break
